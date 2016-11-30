@@ -1,0 +1,16 @@
+{
+  "bridge": {
+    "name": "Raspberry Pi 3",
+    "username": "CC:22:3D:E3:CE:30",
+    "port": 51826,
+    "pin": "031-45-154"
+  },
+  "description": "Raspberry Pi 3 Homebridge Ecobee 3 Sensors Example",
+
+  "platforms": [
+    {
+      "platform": "Ecobee 3 Sensors",
+      "name": "Ecobee",
+    }
+  ]
+}

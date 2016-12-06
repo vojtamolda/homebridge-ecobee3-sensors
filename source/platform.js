@@ -16,6 +16,7 @@ module.exports = function (uuidGen, accessory, ecobeeSensor) {
 
 function EcobeePlatform(log, config, homebridgeAPI) {
   this.log = log;
+  this.config = config
 
   this.appKey = "DALCINnO49EYOmMfQQxmx7PYofM1YEGo";
   this.accessToken = null;
@@ -217,7 +218,7 @@ EcobeePlatform.prototype.sensors = function (reply) {
 
   for (var thermostatConfig of reply.thermostatList) {
     for (var sensorConfig of thermostatConfig.remoteSensors) {
-      if (sensorConfig.type !== 'ecobee3_remote_sensor') continue
+      if ((this.config.exclude_thermostat === true) && (sensorConfig.type !== 'ecobee3_remote_sensor')) continue
 
       var sensorCode = sensorConfig.code;
       var sensor = this.ecobeeAccessories[sensorCode];

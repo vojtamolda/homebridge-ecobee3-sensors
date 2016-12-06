@@ -11,6 +11,7 @@
     {
       "platform": "Ecobee 3 Sensors",
       "name": "Ecobee",
+      "exclude_thermostat": false
     }
   ]
 }

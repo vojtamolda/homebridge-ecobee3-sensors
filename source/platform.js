@@ -1,3 +1,6 @@
+/* jshint esversion: 6 */
+/* jshint sub: true */
+
 var UUIDGen, Accessory, EcobeeSensor;
 var Querystring = require('querystring');
 var Https = require('https');
@@ -131,7 +134,6 @@ EcobeePlatform.prototype.authorize = function (code) {
           setTimeout(this.authorize.bind(this), 10 * 1000, code);
           break;
       }
-      ;
     }.bind(this));
   }.bind(this));
   request.write(Querystring.stringify({
@@ -208,14 +210,15 @@ EcobeePlatform.prototype.update = function (callback) {
 
 EcobeePlatform.prototype.sensors = function (reply) {
   this.log.debug("Setting values of sensors...");
-  if (!reply.thermostatList || reply.thermostatList.length == 0) {
+  if (!reply.thermostatList || reply.thermostatList.length === 0) {
     this.log.error("No Ecobee 3 thermostats found. Please, make soure your thermostat is registered.");
     return;
   }
 
   for (var thermostatConfig of reply.thermostatList) {
     for (var sensorConfig of thermostatConfig.remoteSensors) {
-      sensorConfig.code = sensorConfig.code || thermostatConfig.identifier; // Hack around missing code for the thermostat itself
+      if (sensorConfig.type !== 'ecobee3_remote_sensor') continue
+
       var sensorCode = sensorConfig.code;
       var sensor = this.ecobeeAccessories[sensorCode];
 
@@ -223,7 +226,7 @@ EcobeePlatform.prototype.sensors = function (reply) {
         var homebridgeAccessory = this.homebridgeAccessories[sensorCode];
         if (!homebridgeAccessory) {
           this.log.info("Create | " + sensorConfig.name + " | " + sensorCode);
-          var homebridgeAccessory = new Accessory(sensorConfig.name, UUIDGen.generate(sensorConfig.name));
+          homebridgeAccessory = new Accessory(sensorConfig.name, UUIDGen.generate(sensorCode + ' ' + sensorConfig.name));
           homebridgeAccessory.context['code'] = sensorCode;
           this.homebridgeAPI.registerPlatformAccessories("homebridge-ecobee3-sensors", "Ecobee 3 Sensors", [homebridgeAccessory]);
         } else {
@@ -298,7 +301,7 @@ EcobeePlatform.prototype.refresh = function (callback) {
   }));
   request.on('error', function (error) {
     this.log.error(error + " Re-requesting authorization!");
-    setTimeout(this.pin.bind(this), 1000, code);
+    setTimeout(this.pin.bind(this), 1000);
   }.bind(this));
   this.log.debug(request);
   request.end();

@@ -1,3 +1,5 @@
+/* jshint esversion: 6 */
+
 var Accessory, Service, Characteristic;
 var Chalk = require('chalk');
 
@@ -27,7 +29,7 @@ function EcobeeSensor(log, config, homebridgeAccessory) {
   informationService.getCharacteristic(Characteristic.SerialNumber).setValue(config.code);
 
   var temperatureService = null, occupancyService = null, humidityService = null;
-  for (capability of config.capability) {
+  for (var capability of config.capability) {
     switch (capability.type) {
 
       case 'temperature':
@@ -66,14 +68,14 @@ function EcobeeSensor(log, config, homebridgeAccessory) {
 
   this.log.info(this.prefix, "Initialized | " + config.code);
   this.update(config);
-};
+}
 
 
 EcobeeSensor.prototype.update = function (config) {
   this.log.debug(this.prefix, "Updating sensor measurement...");
   this.log.debug(config);
   var temperature = null, occupancy = null, humidity = null;
-  for (capability of config.capability) {
+  for (var capability of config.capability) {
     switch (capability.type) {
 
       case 'temperature':
@@ -93,6 +95,7 @@ EcobeeSensor.prototype.update = function (config) {
         humidity = t2p(capability.value);
         this.humidityCharacteristic.updateValue(humidity, null, this);
         humidity = humidity + "%";
+        break;
 
       default:
         break;

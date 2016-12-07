@@ -62,7 +62,7 @@ EcobeePlatform.prototype.pin = function () {
     path: '/authorize?' + Querystring.stringify({
       'response_type': 'ecobeePin',
       'client_id': this.appKey,
-      'scope': 'smartWrite'
+      'scope': 'smartRead'
     }),
     method: 'GET'
   };
@@ -307,4 +307,3 @@ EcobeePlatform.prototype.refresh = function (callback) {
   this.log.debug(request);
   request.end();
 };
-

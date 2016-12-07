@@ -10,7 +10,7 @@
   "platforms": [
     {
       "platform": "Ecobee 3 Sensors",
-      "name": "Ecobee",
+      "name": "Ecobee"
     }
   ]
 }

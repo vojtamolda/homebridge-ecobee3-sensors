@@ -5,7 +5,7 @@
     "port": 51826,
     "pin": "031-45-154"
   },
-  "description": "Raspberry Pi 3 Homebridge Ecobee 3 Sensors Example",
+  "description": "Ecobee 3 Sensors plugin example configuration file.",
 
   "platforms": [
     {

@@ -26,7 +26,19 @@ Make sure your systems matches the [prerequisites](#what-are-the-prerequisites-f
 **Note** _Depending on your privileges `-g` flag may need root permissions to install packages to the global `npm` module directory._
 
 ### Configure Homebridge
-Homebridge is setup via `config.json` file sitting in the `~/.homebridge/` directory. The [example `config.json`](config.json) included in the repository is a good starting point and doesn't require any modification.
+Homebridge is setup via `config.json` file sitting in the `~/.homebridge/` directory. To configure the plugin add a new entry into the platform section and name it whatever you like:
+
+```js
+"platforms": [
+  {
+    "platform": "Ecobee 3 Sensors",
+    "name": "Ecobee",
+    "exclude_thermostat": false
+  }
+]
+```
+
+Alternatively, you can use the example [`config.json`](config.json) included in the repository. It's a good starting point and the file doesn't require any modification.
 
 ### Run Homebridge
 Homebridge package creates a handy executable that can be used to start the home automation server.

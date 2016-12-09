@@ -18,6 +18,8 @@ function EcobeePlatform(log, config, homebridgeAPI) {
   this.log = log;
   this.config = config
 
+  this.exclude_thermostat = config.exclude_thermostat || false;
+
   this.appKey = "DALCINnO49EYOmMfQQxmx7PYofM1YEGo";
   this.accessToken = null;
   this.refreshToken = null;
@@ -218,8 +220,11 @@ EcobeePlatform.prototype.sensors = function (reply) {
 
   for (var thermostatConfig of reply.thermostatList) {
     for (var sensorConfig of thermostatConfig.remoteSensors) {
-      if ((this.config.exclude_thermostat === true) && (sensorConfig.type !== 'ecobee3_remote_sensor')) continue
 
+      if (sensorConfig.type === 'thermostat') {
+        if (this.exclude_thermostat) continue;
+        sensorConfig.code = thermostatConfig.identifier; // Hack around missing code for the thermostat itself
+      }
       var sensorCode = sensorConfig.code;
       var sensor = this.ecobeeAccessories[sensorCode];
 

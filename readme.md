@@ -38,6 +38,29 @@ Homebridge is setup via `config.json` file sitting in the `~/.homebridge/` direc
   }
 ]
 ```
+To obtain your own api key:
+#### 1. Go to [Ecobee login page](https://www.ecobee.com/home/ecobeeLogin.jsp)
+
+<img src="images/ecobee-auth-1.png" width="45%">
+
+#### 2. Login with your username and password
+You need to register your thermostat first, so do this if you haven't yet.
+
+<img src="images/ecobee-auth-2.png" width="45%">
+
+#### 3. Select _DEVLOPER_ from the menu on the top right.
+<img src="images/devloper.png" width="45%">
+
+#### 4. Click _CREATE NEW_.
+
+#### 5. Fill in Application Name and Application Summary.
+<img src="images/app.png" width="45%">
+
+#### 6. Click _Authorization Method _. and select ecobee PIN
+<img src="images/pin.png" width="45%">
+
+#### 7. Click _CREATE _. and copy your API key.
+
 
 Alternatively, you can use the example [`config.json`](config.json) included in the repository. It's a good starting point and the file doesn't require any modification.
 
@@ -49,7 +72,6 @@ homebridge
 ```
 
 <img src="images/homebridge.png">
-
 
 
 ## Authorization

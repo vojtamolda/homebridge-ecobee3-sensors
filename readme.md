@@ -33,7 +33,8 @@ Homebridge is setup via `config.json` file sitting in the `~/.homebridge/` direc
   {
     "platform": "Ecobee 3 Sensors",
     "name": "Ecobee",
-    "exclude_thermostat": false
+    "exclude_thermostat": false,
+    "apiKey":"YOUR API KEY"
   }
 ]
 ```

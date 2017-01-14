@@ -219,8 +219,12 @@ EcobeePlatform.prototype.sensors = function (reply) {
   }
 
   for (var thermostatConfig of reply.thermostatList) {
-    for (var sensorConfig of thermostatConfig.remoteSensors) {
+    if (thermostatConfig.modelNumber != 'athenaSmart') {
+      this.log.info("Not supported thermostat | " + thermostatConfig.name + " (" + thermostatConfig.modelNumber + ")");
+      continue
+    }
 
+    for (var sensorConfig of thermostatConfig.remoteSensors) {
       if (sensorConfig.type === 'thermostat') {
         if (this.exclude_thermostat) continue;
         sensorConfig.code = thermostatConfig.identifier; // Hack around missing code for the thermostat itself

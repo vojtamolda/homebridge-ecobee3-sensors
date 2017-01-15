@@ -20,7 +20,7 @@ function EcobeePlatform(log, config, homebridgeAPI) {
 
   this.exclude_thermostat = config.exclude_thermostat || false;
 
-  this.appKey = config.apiKey || "DALCINnO49EYOmMfQQxmx7PYofM1YEGo";
+  this.appKey = config.app_key || "DALCINnO49EYOmMfQQxmx7PYofM1YEGo";
   this.accessToken = null;
   this.refreshToken = null;
 

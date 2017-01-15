@@ -11,8 +11,7 @@
     {
       "platform": "Ecobee 3 Sensors",
       "name": "Ecobee",
-      "exclude_thermostat": false,
-      "app_key":"Remove this entry if you don't have your Ecobee developer API key."
+      "exclude_thermostat": false
     }
   ]
 }

@@ -33,33 +33,11 @@ Homebridge is setup via `config.json` file sitting in the `~/.homebridge/` direc
   {
     "platform": "Ecobee 3 Sensors",
     "name": "Ecobee",
-    "exclude_thermostat": false,
-    "apiKey":"YOUR API KEY"
+    "exclude_thermostat": false
   }
 ]
 ```
-To obtain your own api key:
-#### 1. Go to [Ecobee login page](https://www.ecobee.com/home/ecobeeLogin.jsp)
 
-<img src="images/ecobee-auth-1.png" width="45%">
-
-#### 2. Login with your username and password
-You need to register your thermostat first, so do this if you haven't yet.
-
-<img src="images/ecobee-auth-2.png" width="45%">
-
-#### 3. Select _DEVLOPER_ from the menu on the top right.
-<img src="images/devloper.png" width="45%">
-
-#### 4. Click _CREATE NEW_.
-
-#### 5. Fill in Application Name and Application Summary.
-<img src="images/app.png" width="45%">
-
-#### 6. Click _Authorization Method _. and select ecobee PIN
-<img src="images/pin.png" width="45%">
-
-#### 7. Click _CREATE _. and copy your API key.
 
 
 Alternatively, you can use the example [`config.json`](config.json) included in the repository. It's a good starting point and the file doesn't require any modification.
@@ -70,7 +48,6 @@ Homebridge package creates a handy executable that can be used to start the home
 ```sh
 homebridge
 ```
-
 <img src="images/homebridge.png">
 
 
@@ -129,6 +106,43 @@ Once all of your sensors has been added to the HomeKit database, besides using t
 <img src="images/home-living.png" width="30%">
 <img src="images/home-occupancy.png" width="30%">
 
+
+
+
+## Advanced User, use own API Key:
+To configure the plugin using own API key from ecobee, add a field to config.json file:
+```js
+"platforms": [
+  {
+    "platform": "Ecobee 3 Sensors",
+    "name": "Ecobee",
+    "exclude_thermostat": false,
+    "app_key":"Remove this entry if you don't have your Ecobee developer API key."
+  }
+]
+```
+To obtain your own api key:
+#### 1. Go to [Ecobee login page](https://www.ecobee.com/home/ecobeeLogin.jsp)
+
+<img src="images/ecobee-auth-1.png" width="45%">
+
+#### 2. Login with your username and password
+You need to register your thermostat first, so do this if you haven't yet.
+
+<img src="images/ecobee-auth-2.png" width="45%">
+
+#### 3. Select _DEVLOPER_ from the menu on the top right.
+<img src="images/devloper.png" width="45%">
+
+#### 4. Click _CREATE NEW_.
+
+#### 5. Fill in Application Name and Application Summary.
+<img src="images/app.png" width="45%">
+
+#### 6. Click _Authorization Method_. and select ecobee PIN
+<img src="images/pin.png" width="45%">
+
+#### 7. Click _CREATE_. and copy your API key.
 
 
 ## Troubleshooting

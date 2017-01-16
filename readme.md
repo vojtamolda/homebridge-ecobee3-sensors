@@ -108,43 +108,6 @@ Once all of your sensors has been added to the HomeKit database, besides using t
 
 
 
-
-## Advanced User, use own API Key:
-To configure the plugin using own API key from ecobee, add a field to config.json file:
-```js
-"platforms": [
-  {
-    "platform": "Ecobee 3 Sensors",
-    "name": "Ecobee",
-    "exclude_thermostat": false,
-    "app_key":"Remove this entry if you don't have your Ecobee developer API key."
-  }
-]
-```
-To obtain your own api key:
-#### 1. Go to [Ecobee login page](https://www.ecobee.com/home/ecobeeLogin.jsp)
-
-<img src="images/ecobee-auth-1.png" width="45%">
-
-#### 2. Login with your username and password
-You need to register your thermostat first, so do this if you haven't yet.
-
-<img src="images/ecobee-auth-2.png" width="45%">
-
-#### 3. Select _DEVLOPER_ from the menu on the top right.
-<img src="images/devloper.png" width="45%">
-
-#### 4. Click _CREATE NEW_.
-
-#### 5. Fill in Application Name and Application Summary.
-<img src="images/app.png" width="45%">
-
-#### 6. Click _Authorization Method_. and select ecobee PIN
-<img src="images/pin.png" width="45%">
-
-#### 7. Click _CREATE_. and copy your API key.
-
-
 ## Troubleshooting
 
 If you encouter a different problem than something posted below, please, open an [issue](https://github.com/vojtamolda/homebridge-ecobee3-sensors/issues).
@@ -198,6 +161,19 @@ Pull request is welcomed here... [Homebridge](https://www.npmjs.com/package/home
 
 ### Can I access my sensors without this plugin?
 Yes. The sensors are visible in the [Ecobee app](https://itunes.apple.com/us/app/ecobee/id916985674?mt=8). They're also accessible by Siri out of the box, although somewhat cumbersomly. See [this link](https://www.ecobee.com/faq/what-voice-commands-can-i-use-to-control-my-homekit-enabled-ecobee3/) for a full list of available commands.
+
+
+###  Can I use my own Ecobee developer API Key?
+To run the plugin you don't need to have your own API key. Hovewer, if you plan to do your own development, it might be beneficial to get your own. To configure the plugin using own developer API key from Ecobee, add `app_key` field to `config.json` file `"app_key": "ECOBEE_DEVELOPER_API_KEY_HERE"`.
+
+To obtain your own Ecobee developer API api key, you need to do the following steps:
+ 1. Go to [Ecobee login page](https://www.ecobee.com/home/ecobeeLogin.jsp)
+ 2. Login with your username and password.
+ 3. Select _DEVLOPER_ from the menu on the top right.
+ 4. Click _CREATE NEW_.
+ 5. Fill in Application Name and Application Summary.
+ 6. Click _Authorization Method_. and select ecobee PIN.
+ 7. Click _CREATE_ and copy your new developer API key.
 
 
 ### On what devices was this plugin tested?

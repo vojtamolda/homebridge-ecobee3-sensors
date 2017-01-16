@@ -18,7 +18,8 @@ function EcobeePlatform(log, config, homebridgeAPI) {
   this.log = log;
   this.config = config
 
-  this.exclude_thermostat = config.exclude_thermostat || false;
+  this.excludeSensors = config.exclude_sensors || false;
+  this.excludeThermostat = config.exclude_thermostat || false;
 
   this.appKey = config.app_key || "DALCINnO49EYOmMfQQxmx7PYofM1YEGo";
   this.accessToken = null;
@@ -226,8 +227,11 @@ EcobeePlatform.prototype.sensors = function (reply) {
 
     for (var sensorConfig of thermostatConfig.remoteSensors) {
       if (sensorConfig.type === 'thermostat') {
-        if (this.exclude_thermostat) continue;
+        if (this.excludeThermostat) continue;
         sensorConfig.code = thermostatConfig.identifier; // Hack around missing code for the thermostat itself
+      }
+      if (sensorConfig.type === 'ecobee3_remote_sensor') {
+        if (this.excludeSensors) continue;
       }
       var sensorCode = sensorConfig.code;
       var sensor = this.ecobeeAccessories[sensorCode];
@@ -260,7 +264,7 @@ EcobeePlatform.prototype.clean = function () {
   this.log.debug(this.homebridgeAccessories);
   for (var sensorCode in this.homebridgeAccessories) {
     var homebridgeAccessory = this.homebridgeAccessories[sensorCode];
-    this.log.info("Remove | " + homebridgeAccessory.name + " - " + sensorCode);
+    this.log.info("Remove | " + homebridgeAccessory.displayName + " - " + sensorCode);
     this.homebridgeAPI.unregisterPlatformAccessories("homebridge-ecobee3-sensors", "Ecobee 3 Sensors", [homebridgeAccessory]);
   }
 };

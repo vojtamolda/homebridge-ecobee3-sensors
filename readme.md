@@ -33,12 +33,11 @@ Homebridge is setup via `config.json` file sitting in the `~/.homebridge/` direc
   {
     "platform": "Ecobee 3 Sensors",
     "name": "Ecobee",
+    "exclude_sensors": false,
     "exclude_thermostat": false
   }
 ]
 ```
-
-
 
 Alternatively, you can use the example [`config.json`](config.json) included in the repository. It's a good starting point and the file doesn't require any modification.
 
@@ -49,6 +48,7 @@ Homebridge package creates a handy executable that can be used to start the home
 homebridge
 ```
 <img src="images/homebridge.png">
+
 
 
 ## Authorization

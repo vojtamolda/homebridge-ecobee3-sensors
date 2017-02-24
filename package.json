@@ -1,6 +1,6 @@
 {
   "name": "homebridge-ecobee3-sensors",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Homebridge plugin that exposes Ecobee 3 sensors as HomeKit accessories",
   "license": "MIT",
   "keywords": [

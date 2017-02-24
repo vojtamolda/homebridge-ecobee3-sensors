@@ -16,12 +16,12 @@ module.exports = function (uuidGen, accessory, ecobeeSensor) {
 
 function EcobeePlatform(log, config, homebridgeAPI) {
   this.log = log;
-  this.config = config
+  this.config = config || {};
 
-  this.excludeSensors = config.exclude_sensors || false;
-  this.excludeThermostat = config.exclude_thermostat || false;
+  this.excludeSensors = this.config.exclude_sensors || false;
+  this.excludeThermostat = this.config.exclude_thermostat || false;
 
-  this.appKey = config.app_key || "DALCINnO49EYOmMfQQxmx7PYofM1YEGo";
+  this.appKey = this.config.app_key || "DALCINnO49EYOmMfQQxmx7PYofM1YEGo";
   this.accessToken = null;
   this.refreshToken = null;
 

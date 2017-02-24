@@ -19,6 +19,9 @@ function EcobeePlatform(log, config, homebridgeAPI) {
   this.config = config || {};
 
   this.excludeSensors = this.config.exclude_sensors || false;
+  this.excludeHumiditySensors = this.config.exclude_humidity_sensors || false;
+  this.excludeOccupancySensors = this.config.exclude_occupancy_sensors || false;
+  this.excludeTemperatureSensors = this.config.exclude_temperature_sensors || false;
   this.excludeThermostat = this.config.exclude_thermostat || false;
 
   this.appKey = this.config.app_key || "DALCINnO49EYOmMfQQxmx7PYofM1YEGo";
@@ -247,7 +250,7 @@ EcobeePlatform.prototype.sensors = function (reply) {
           this.log.info("Cached | " + sensorConfig.name + " | " + sensorCode);
           delete this.homebridgeAccessories[sensorCode];
         }
-        sensor = new EcobeeSensor(this.log, sensorConfig, homebridgeAccessory);
+        sensor = new EcobeeSensor(this.log, sensorConfig, this, homebridgeAccessory);
         this.ecobeeAccessories[sensorCode] = sensor;
       } else {
         sensor.update(sensorConfig);

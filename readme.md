@@ -34,6 +34,9 @@ Homebridge is setup via `config.json` file sitting in the `~/.homebridge/` direc
     "platform": "Ecobee 3 Sensors",
     "name": "Ecobee",
     "exclude_sensors": false,
+    "exclude_humidity_sensors": false,
+    "exclude_occupancy_sensors": false,
+    "exclude_temperature_sensors": false,
     "exclude_thermostat": false
   }
 ]

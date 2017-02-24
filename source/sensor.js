@@ -12,7 +12,7 @@ module.exports = function (accessory, service, characteristic) {
 };
 
 
-function EcobeeSensor(log, config, homebridgeAccessory) {
+function EcobeeSensor(log, config, platform, homebridgeAccessory) {
   this.log = log;
   this.name = config.name;
   this.prefix = Chalk.blue("[" + config.name + "]");
@@ -33,6 +33,7 @@ function EcobeeSensor(log, config, homebridgeAccessory) {
     switch (capability.type) {
 
       case 'temperature':
+        if (platform.excludeTemperatureSensors) continue;
         temperatureService = this.homebridgeAccessory.getService(Service.TemperatureSensor);
         if (!temperatureService) {
           temperatureService = this.homebridgeAccessory.addService(Service.TemperatureSensor);
@@ -43,6 +44,7 @@ function EcobeeSensor(log, config, homebridgeAccessory) {
         break;
 
       case 'occupancy':
+        if (platform.excludeOccupancySensors) continue;
         occupancyService = this.homebridgeAccessory.getService(Service.OccupancySensor);
         if (!occupancyService) {
           occupancyService = this.homebridgeAccessory.addService(Service.OccupancySensor);
@@ -52,6 +54,7 @@ function EcobeeSensor(log, config, homebridgeAccessory) {
         break;
 
       case 'humidity':
+        if (platform.excludeHumiditySensors) continue;
         humidityService = this.homebridgeAccessory.getService(Service.HumiditySensor);
         if (!humidityService) {
           humidityService = this.homebridgeAccessory.addService(Service.HumiditySensor);
@@ -74,37 +77,37 @@ function EcobeeSensor(log, config, homebridgeAccessory) {
 EcobeeSensor.prototype.update = function (config) {
   this.log.debug(this.prefix, "Updating sensor measurement...");
   this.log.debug(config);
-  var temperature = null, occupancy = null, humidity = null;
+  var temperature = null, occupancy = null, humidity = null; var output = [];
   for (var capability of config.capability) {
     switch (capability.type) {
 
       case 'temperature':
+        if (!this.temperatureCharacteristic) continue;
         temperature = f2c(capability.value);
         this.temperatureCharacteristic.updateValue(temperature, null, this);
         this.temperatureActiveCharacteristic.updateValue(config.inUse, null, this);
-        temperature = temperature.toFixed(1) + "°C";
+        output.push(temperature.toFixed(1) + "°C");
         break;
 
       case 'occupancy':
+        if (!this.occupancyCharacteristic) continue;
         occupancy = t2b(capability.value);
         this.occupancyCharacteristic.updateValue(occupancy, null, this);
-        occupancy = (occupancy) ? "Occupied" : "Vacant";
+        output.push((occupancy) ? "Occupied" : "Vacant");
         break;
 
       case 'humidity':
+        if (!this.humidityCharacteristic) continue;
         humidity = t2p(capability.value);
         this.humidityCharacteristic.updateValue(humidity, null, this);
-        humidity = humidity + "%";
+        output.push(humidity + "%");
         break;
 
       default:
         break;
     }
   }
-  occupancy = (occupancy) ? occupancy : "";
-  humidity = (humidity) ? " | " + humidity : "";
-  temperature = (temperature) ? " | " + temperature : "";
-  this.log.info(this.prefix, occupancy + humidity + temperature);
+  this.log.info(this.prefix, output.join(" | "));
 };
 
 

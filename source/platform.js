@@ -15,6 +15,11 @@ module.exports = function (uuidGen, accessory, ecobeeSensor) {
 
 
 function EcobeePlatform(log, config, homebridgeAPI) {
+ if (!config) {
+    log.warn(" Ignoring Ecobee3 Sensor Plugin setup because it is not configured");
+    this.disabled = true;
+    return;
+  }
   this.log = log;
   this.config = config || {};
 

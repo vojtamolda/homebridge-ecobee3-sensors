@@ -113,7 +113,7 @@ EcobeeSensor.prototype.update = function (config) {
 
 EcobeeSensor.prototype.identify = function (callback) {
   this.log.info(this.prefix, "Identify");
-  callback();
+  if (callback) callback();
 };
 
 

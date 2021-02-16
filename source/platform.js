@@ -16,7 +16,7 @@ module.exports = function (uuidGen, accessory, ecobeeSensor) {
 
 function EcobeePlatform(log, config, homebridgeAPI) {
  if (!config) {
-    log.warn(" Ignoring Ecobee3 Sensor Plugin setup because it is not configured");
+    log.warn(" Ignoring Ecobee Sensor Plugin setup because it is not configured");
     this.disabled = true;
     return;
   }
@@ -28,6 +28,7 @@ function EcobeePlatform(log, config, homebridgeAPI) {
   this.excludeOccupancySensors = this.config.exclude_occupancy_sensors || false;
   this.excludeTemperatureSensors = this.config.exclude_temperature_sensors || false;
   this.excludeThermostat = this.config.exclude_thermostat || false;
+  this.updateFrequency = this.config.update_frequency || 30;
 
   this.appKey = this.config.app_key || "DALCINnO49EYOmMfQQxmx7PYofM1YEGo";
   this.accessToken = null;
@@ -87,7 +88,7 @@ EcobeePlatform.prototype.pin = function () {
       this.log.debug(reply);
       var pin = reply['ecobeePin'];
       var code = reply['code'];
-      this.log.info("These are the steps authorize this application to access your Ecobee 3:");
+      this.log.info("These are the steps authorize this application to access your Ecobee:");
       this.log.info("  1. Go to https://www.ecobee.com/home/ecobeeLogin.jsp");
       this.log.info("  2. Login to your thermostat console ");
       this.log.info("  3. Select 'MY APPS' from the menu on the top right.");
@@ -194,8 +195,8 @@ EcobeePlatform.prototype.update = function (callback) {
         case 0:
           this.log.info("Update sensors");
           this.sensors(reply);
-          setTimeout(this.update.bind(this), 31*1000);
-          this.log.info("Wait | 30 seconds");
+          setTimeout(this.update.bind(this), this.updateFrequency*1000);
+          this.log.info("Wait | " + this.updateFrequency + " seconds");
           if (callback) callback();
           break;
         case 14:
@@ -223,7 +224,7 @@ EcobeePlatform.prototype.update = function (callback) {
 EcobeePlatform.prototype.sensors = function (reply) {
   this.log.debug("Setting values of sensors...");
   if (!reply.thermostatList || reply.thermostatList.length === 0) {
-    this.log.error("No Ecobee 3 thermostats found. Please, make soure your thermostat is registered.");
+    this.log.error("No Ecobee thermostats found. Please, make soure your thermostat is registered.");
     return;
   }
 

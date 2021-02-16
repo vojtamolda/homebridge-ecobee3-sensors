@@ -15,7 +15,8 @@
       "exclude_humidity_sensors": false,
       "exclude_occupancy_sensors": false,
       "exclude_temperature_sensors": false,
-      "exclude_thermostat": false
+      "exclude_thermostat": false,
+      "update_frequency": 30
     }
   ]
 }

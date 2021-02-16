@@ -1,7 +1,7 @@
 {
   "name": "homebridge-ecobee3-sensors",
-  "version": "0.1.5",
-  "description": "Homebridge plugin that exposes Ecobee 3 sensors as HomeKit accessories",
+  "version": "0.1.6",
+  "description": "Homebridge plugin that exposes Ecobee sensors as HomeKit accessories",
   "license": "MIT",
   "keywords": [
     "homebridge-plugin", "ecobee", "ecobee3", "smart thermostat", "sensor"

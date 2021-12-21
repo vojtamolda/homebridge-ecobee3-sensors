@@ -18,6 +18,6 @@
     "homebridge": ">=0.4.6"
   },
   "dependencies": {
-    "chalk": ">=1.1.1"
+    "chalk": ">=1.1.1 <2.0.0"
   }
 }

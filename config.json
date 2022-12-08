@@ -16,7 +16,8 @@
       "exclude_occupancy_sensors": false,
       "exclude_temperature_sensors": false,
       "exclude_thermostat": false,
-      "update_frequency": 30
+      "update_frequency": 30,
+      "log_level": 1
     }
   ]
 }

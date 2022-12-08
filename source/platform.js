@@ -5,6 +5,61 @@ var UUIDGen, Accessory, EcobeeSensor;
 var Querystring = require('querystring');
 var Https = require('https');
 
+const Verbosity = Object.freeze({
+    None: 0,
+    Error: 1,
+    Warn: 2,
+    Info: 3,
+    Debug: 4
+})
+
+
+class EBLogger {
+    constructor(log) {
+        this.hbLog = log;
+    }
+
+    setLevel(level) {
+        this.logLevel = level;
+    }
+
+    debug(args) {
+        if (this.logLevel >= Verbosity.Debug) {
+            this.hbLog.debug(args);
+        }
+    }
+
+    info(args) {
+        if (this.logLevel >= Verbosity.Info) {
+            this.hbLog.info(args);
+        }
+    }
+
+    warn(args) {
+        if (this.logLevel >= Verbosity.Warn) {
+            this.hbLog.warn(args);
+        }
+    }
+
+    error(args) {
+        if (this.logLevel >= Verbosity.Error) {
+            this.hbLog.error(args);
+        }
+    }
+
+    getLevelStr() {
+        switch (this.logLevel) {
+            case Verbosity.None: return "None";
+            case Verbosity.Error: return "Error";
+            case Verbosity.Warn: return "Warn";
+            case Verbosity.Info: return "Info";
+            case Verbosity.Debug: return "Debug";
+            default: return "Unknown";
+        }
+    }
+}
+
+
 module.exports = function (uuidGen, accessory, ecobeeSensor) {
   UUIDGen = uuidGen
   Accessory = accessory;
@@ -20,7 +75,8 @@ function EcobeePlatform(log, config, homebridgeAPI) {
     this.disabled = true;
     return;
   }
-  this.log = log;
+
+  this.log = new EBLogger(log);  
   this.config = config || {};
 
   this.excludeSensors = this.config.exclude_sensors || false;
@@ -29,6 +85,10 @@ function EcobeePlatform(log, config, homebridgeAPI) {
   this.excludeTemperatureSensors = this.config.exclude_temperature_sensors || false;
   this.excludeThermostat = this.config.exclude_thermostat || false;
   this.updateFrequency = this.config.update_frequency || 30;
+  this.logLevel = this.config.log_level || Verbosity.Info;
+
+  this.log.setLevel(this.logLevel);
+  log.info("Log level set to " + this.log.getLevelStr());
 
   this.appKey = this.config.app_key || "DALCINnO49EYOmMfQQxmx7PYofM1YEGo";
   this.accessToken = null;

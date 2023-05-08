@@ -15,6 +15,7 @@ module.exports = function (accessory, service, characteristic) {
 function EcobeeEquipment(log, config, platform, homebridgeAccessory) {
   this.log = log;
   this.name = config.name;
+  this.isEquipment = true;
   this.prefix = Chalk.blue("[" + config.name + "]");
   this.log.debug(this.prefix, "Initializing equipment...");
   this.log.debug(config);

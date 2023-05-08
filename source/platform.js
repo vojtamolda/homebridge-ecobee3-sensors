@@ -370,7 +370,10 @@ EcobeePlatform.prototype.equipments = function (reply) {
     }
 
     for (var equipmentName in this.ecobeeAccessories) {
-      this.ecobeeAccessories[equipmentName].update(activeEquipments.includes(equipmentName));
+      var equipment = this.ecobeeAccessories[equipmentName];
+      if (equipment.isEquipment) {
+        equipment.update(activeEquipments.includes(equipmentName));
+      }
     }
   }
 

@@ -342,13 +342,13 @@ EcobeePlatform.prototype.equipments = function (reply) {
     return;
   }
 
+  var activeEquipments = [];
   for (var thermostatConfig of reply.thermostatList) {
     if ((thermostatConfig.modelNumber != 'vulcanSmart') && (thermostatConfig.modelNumber != 'athenaSmart') && (thermostatConfig.modelNumber != 'apolloSmart') && (thermostatConfig.modelNumber != 'nikeSmart') && (thermostatConfig.modelNumber != 'aresSmart')) {
       this.log.info("Not supported thermostat | " + thermostatConfig.name + " (" + thermostatConfig.modelNumber + ")");
       continue
     }
 
-    var activeEquipments = [];
     if (thermostatConfig.equipmentStatus) {
       for (var equipmentName of thermostatConfig.equipmentStatus.split(',')) {
         if (equipmentName === '') continue;
@@ -368,12 +368,12 @@ EcobeePlatform.prototype.equipments = function (reply) {
         activeEquipments.push(equipmentName);
       }
     }
+  }
 
-    for (var equipmentName in this.ecobeeAccessories) {
-      var equipment = this.ecobeeAccessories[equipmentName];
-      if (equipment.isEquipment) {
-        equipment.update(activeEquipments.includes(equipmentName));
-      }
+  for (var equipmentName in this.ecobeeAccessories) {
+    var equipment = this.ecobeeAccessories[equipmentName];
+    if (equipment.isEquipment) {
+      equipment.update(activeEquipments.includes(equipmentName));
     }
   }
 

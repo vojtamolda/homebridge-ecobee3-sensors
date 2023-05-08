@@ -39,8 +39,7 @@ function EcobeeEquipment(log, config, platform, homebridgeAccessory) {
 
 
 EcobeeEquipment.prototype.update = function (status) {
-  this.log.debug(this.prefix, "Updating equipment measurement...");
-  this.log.debug(config);
+  this.log.debug(this.prefix, "Updating equipment measurement " + this.name);
 
   if (this.contactSensorCharacteristic) {
     var currentValue = status ?

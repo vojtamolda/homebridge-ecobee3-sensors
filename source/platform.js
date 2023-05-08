@@ -260,6 +260,7 @@ EcobeePlatform.prototype.update = function (callback) {
           this.sensors(reply);
           this.log.info("Update equipments");
           this.equipments(reply);
+          this.clean();
           setTimeout(this.update.bind(this), this.updateFrequency*1000);
           this.log.info("Wait | " + this.updateFrequency + " seconds");
           if (callback) callback();
@@ -330,8 +331,6 @@ EcobeePlatform.prototype.sensors = function (reply) {
       }
     }
   }
-
-  this.clean();
 };
 
 
@@ -362,7 +361,7 @@ EcobeePlatform.prototype.equipments = function (reply) {
             homebridgeAccessory.context['code'] = equipmentName;
             this.homebridgeAPI.registerPlatformAccessories("homebridge-ecobee3-sensors", "Ecobee 3 Sensors", [homebridgeAccessory]);
           }
-          equipment = new EcobeeEquipment(this.log, { name: equipmentName }, this, homebridgeAccessory);
+          equipment = new EcobeeEquipment(this.log, { name: equipmentName, code: equipmentName }, this, homebridgeAccessory);
           this.ecobeeAccessories[equipmentName] = equipment;
         }
         activeEquipments.push(equipmentName);
@@ -376,8 +375,6 @@ EcobeePlatform.prototype.equipments = function (reply) {
       equipment.update(activeEquipments.includes(equipmentName));
     }
   }
-
-  this.clean();
 };
 
 EcobeePlatform.prototype.clean = function () {

@@ -307,7 +307,7 @@ EcobeePlatform.prototype.sensors = function (reply) {
       if (sensorConfig.type === 'ecobee3_remote_sensor') {
         if (this.excludeSensors) continue;
       }
-      if (config.capability) {
+      if (sensorConfig.capability) {
         var sensorCode = sensorConfig.code;
         var sensor = this.ecobeeAccessories[sensorCode];
 

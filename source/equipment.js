@@ -29,8 +29,8 @@ function EcobeeEquipment(log, config, platform, homebridgeAccessory) {
   informationService.getCharacteristic(Characteristic.SerialNumber).setValue('ecobee3-equipment-' + config.name);
 
   if (platform.excludeEquipmentSensors) return;
-  var switchService = this.homebridgeAccessory.getService(Service.ContactSensor);
-  switchService.displayName = config.name;
+  var switchService = this.homebridgeAccessory.addService(Service.ContactSensor);
+  switchService.displayName = 'Equipment';
   this.contactSensorCharacteristic = switchService.getCharacteristic(Characteristic.ContactSensorState);
 
   this.log.info(this.prefix, "Initialized | " + config.name);

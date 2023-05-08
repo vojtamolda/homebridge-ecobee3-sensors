@@ -386,7 +386,11 @@ EcobeePlatform.prototype.clean = function () {
   for (var sensorCode in this.homebridgeAccessories) {
     var homebridgeAccessory = this.homebridgeAccessories[sensorCode];
     this.log.info("Remove | " + homebridgeAccessory.displayName + " - " + sensorCode);
+    try {
     this.homebridgeAPI.unregisterPlatformAccessories("homebridge-ecobee3-sensors", "Ecobee 3 Sensors", [homebridgeAccessory]);
+    } catch (e) {
+      this.log.error(e);
+    }
   }
 };
 

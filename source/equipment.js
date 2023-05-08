@@ -31,7 +31,7 @@ function EcobeeEquipment(log, config, platform, homebridgeAccessory) {
 
   if (platform.excludeEquipmentSensors) return;
 
-  var switchService = this.homebridgeAccessory.getService(Service.TemperatureSensor);
+  var switchService = this.homebridgeAccessory.getService(Service.ContactSensor);
   if (!switchService) {
     switchService = this.homebridgeAccessory.addService(Service.ContactSensor);
     switchService.displayName = 'Equipment';

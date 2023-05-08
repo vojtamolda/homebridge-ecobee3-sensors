@@ -1,7 +1,7 @@
 /* jshint esversion: 6 */
 /* jshint sub: true */
 
-var UUIDGen, Accessory, EcobeeSensor;
+var UUIDGen, Accessory, EcobeeSensor, EcobeeEquipment;
 var Querystring = require('querystring');
 var Https = require('https');
 
@@ -60,10 +60,11 @@ class EBLogger {
 }
 
 
-module.exports = function (uuidGen, accessory, ecobeeSensor) {
+module.exports = function (uuidGen, accessory, ecobeeSensor, ecobeeEquipment) {
   UUIDGen = uuidGen
   Accessory = accessory;
   EcobeeSensor = ecobeeSensor;
+  EcobeeEquipment = ecobeeEquipment;
 
   return EcobeePlatform;
 };
@@ -83,7 +84,8 @@ function EcobeePlatform(log, config, homebridgeAPI) {
   this.excludeHumiditySensors = this.config.exclude_humidity_sensors || false;
   this.excludeOccupancySensors = this.config.exclude_occupancy_sensors || false;
   this.excludeTemperatureSensors = this.config.exclude_temperature_sensors || false;
-  this.excludeThermostat = this.config.exclude_thermostat || false;
+  this.excludeEquipmentSensors = this.config.exclude_equipment_sensors || false;
+  this.excludeThermostat = this.config.ex || false;
   this.updateFrequency = this.config.update_frequency || 30;
   this.logLevel = this.config.log_level || Verbosity.Info;
 
@@ -96,6 +98,7 @@ function EcobeePlatform(log, config, homebridgeAPI) {
 
   this.ecobeeAccessories = {};
   this.homebridgeAccessories = {};
+  this.homebridgeEquipmentAccessories = {};
 
   this.homebridgeAPI = homebridgeAPI;
   this.homebridgeAPI.on('didFinishLaunching', this.didFinishLaunching.bind(this));
@@ -236,7 +239,8 @@ EcobeePlatform.prototype.update = function (callback) {
         'selection': {
           'selectionType': 'registered',
           'selectionMatch': '',
-          'includeSensors': true
+          'includeSensors': true,
+          'includeEquipmentStatus': true
         }
       })
     }),
@@ -255,6 +259,8 @@ EcobeePlatform.prototype.update = function (callback) {
         case 0:
           this.log.info("Update sensors");
           this.sensors(reply);
+          this.log.info("Update equipments");
+          this.equipments(reply);
           setTimeout(this.update.bind(this), this.updateFrequency*1000);
           this.log.info("Wait | " + this.updateFrequency + " seconds");
           if (callback) callback();
@@ -327,6 +333,55 @@ EcobeePlatform.prototype.sensors = function (reply) {
   this.clean();
 };
 
+
+EcobeePlatform.prototype.equipments = function (reply) {
+  this.log.debug("Setting values of equipments...");
+  if (!reply.thermostatList || reply.thermostatList.length === 0) {
+    this.log.error("No Ecobee thermostats found. Please, make soure your thermostat is registered.");
+    return;
+  }
+
+  for (var thermostatConfig of reply.thermostatList) {
+    if ((thermostatConfig.modelNumber != 'vulcanSmart') && (thermostatConfig.modelNumber != 'athenaSmart') && (thermostatConfig.modelNumber != 'apolloSmart') && (thermostatConfig.modelNumber != 'nikeSmart') && (thermostatConfig.modelNumber != 'aresSmart')) {
+      this.log.info("Not supported thermostat | " + thermostatConfig.name + " (" + thermostatConfig.modelNumber + ")");
+      continue
+    }
+
+    var activeEquipments = [];
+    for (var equipmentName of thermostatConfig.equipmentStatus.split(',')) {
+      var equipment = this.ecobeeAccessories[equipment];
+    
+      if (!equipment) {
+        var homebridgeAccessory = this.homebridgeEquipmentAccessories[equipmentName];
+        if (!homebridgeAccessory) {
+          this.log.info("Create | " + equipmentName);
+          homebridgeAccessory = new Accessory(equipmentName, UUIDGen.generate(`equipment ${equipmentName}`));
+          homebridgeAccessory.context['code'] = equipmentName;
+          this.homebridgeAPI.registerPlatformAccessories("homebridge-ecobee3-equipments", "Ecobee Equipment", [homebridgeAccessory]);
+        }
+        equipment = new EcobeeEquipment(this.log, sensorConfig, this, homebridgeAccessory);
+        this.ecobeeAccessories[equipmentName] = equipment;
+      }
+      activeEquipments.push(equipmentName);
+    }
+
+    for (var equipmentName in this.ecobeeAccessories) {
+      this.ecobeeAccessories[equipmentName].update(activeEquipments.includes(equipmentName));
+    }
+  }
+
+  this.cleanEquipments();
+};
+
+EcobeePlatform.prototype.cleanEquipments = function () {
+  this.log.debug("Cleaning unused cached Homebridge accessories...");
+  this.log.debug(this.homebridgeEquipmentAccessories);
+  for (var equipment in this.homebridgeEquipmentAccessories) {
+    var homebridgeAccessory = this.homebridgeEquipmentAccessories[equipment];
+    this.log.info("Remove | " + homebridgeEquipmentAccessories.displayName + " - " + equipment);
+    this.homebridgeAPI.unregisterPlatformAccessories("homebridge-ecobee3-equipments", "Ecobee 3 Equipments", [homebridgeAccessory]);
+  }
+};
 
 EcobeePlatform.prototype.clean = function () {
   this.log.debug("Cleaning unused cached Homebridge accessories...");

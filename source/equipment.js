@@ -26,13 +26,13 @@ function EcobeeEquipment(log, config, platform, homebridgeAccessory) {
   informationService.getCharacteristic(Characteristic.Name).setValue(config.name);
   informationService.getCharacteristic(Characteristic.Manufacturer).setValue("ecobee Inc.");
   informationService.getCharacteristic(Characteristic.Model).setValue("ecobee3 equipment");
-  informationService.getCharacteristic(Characteristic.SerialNumber).setValue(config.code);
+  informationService.getCharacteristic(Characteristic.SerialNumber).setValue('ecobee3-equipment-' + config.name);
 
   if (platform.excludeEquipmentSensors) return;
   var switchService = this.homebridgeAccessory.getService(Service.ContactSensor);
   this.temperatureCharacteristic = switchService.getCharacteristic(Characteristic.ContactSensorState);
 
-  this.log.info(this.prefix, "Initialized | " + config.code);
+  this.log.info(this.prefix, "Initialized | " + config.name);
   this.update(config);
 }
 

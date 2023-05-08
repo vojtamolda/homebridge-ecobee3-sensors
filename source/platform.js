@@ -359,7 +359,7 @@ EcobeePlatform.prototype.equipments = function (reply) {
           homebridgeAccessory.context['code'] = equipmentName;
           this.homebridgeAPI.registerPlatformAccessories("homebridge-ecobee3-equipments", "Ecobee Equipment", [homebridgeAccessory]);
         }
-        equipment = new EcobeeEquipment(this.log, sensorConfig, this, homebridgeAccessory);
+        equipment = new EcobeeEquipment(this.log, { name: equipmentName }, this, homebridgeAccessory);
         this.ecobeeAccessories[equipmentName] = equipment;
       }
       activeEquipments.push(equipmentName);

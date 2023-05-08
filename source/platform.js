@@ -348,23 +348,26 @@ EcobeePlatform.prototype.equipments = function (reply) {
     }
 
     var activeEquipments = [];
-    for (var equipmentName of thermostatConfig.equipmentStatus.split(',')) {
-      var equipment = this.ecobeeAccessories[equipment];
-    
-      if (!equipment) {
-        var homebridgeAccessory = this.homebridgeEquipmentAccessories[equipmentName];
-        if (!homebridgeAccessory) {
-          this.log.info("Create | " + equipmentName);
-          homebridgeAccessory = new Accessory(equipmentName, UUIDGen.generate(`equipment ${equipmentName}`));
-          homebridgeAccessory.context['code'] = equipmentName;
-          this.homebridgeAPI.registerPlatformAccessories("homebridge-ecobee3-equipments", "Ecobee Equipment", [homebridgeAccessory]);
+    if (thermostatConfig.equipmentStatus) {
+      for (var equipmentName of thermostatConfig.equipmentStatus.split(',')) {
+        if (equipmentName === '') continue;
+        var equipment = this.ecobeeAccessories[equipment];
+      
+        if (!equipment) {
+          var homebridgeAccessory = this.homebridgeEquipmentAccessories[equipmentName];
+          if (!homebridgeAccessory) {
+            this.log.info("Create | " + equipmentName);
+            homebridgeAccessory = new Accessory(equipmentName, UUIDGen.generate(`equipment ${equipmentName}`));
+            homebridgeAccessory.context['code'] = equipmentName;
+            this.homebridgeAPI.registerPlatformAccessories("homebridge-ecobee3-equipments", "Ecobee Equipment", [homebridgeAccessory]);
+          }
+          equipment = new EcobeeEquipment(this.log, { name: equipmentName }, this, homebridgeAccessory);
+          this.ecobeeAccessories[equipmentName] = equipment;
         }
-        equipment = new EcobeeEquipment(this.log, { name: equipmentName }, this, homebridgeAccessory);
-        this.ecobeeAccessories[equipmentName] = equipment;
+        activeEquipments.push(equipmentName);
       }
-      activeEquipments.push(equipmentName);
     }
-
+    
     for (var equipmentName in this.ecobeeAccessories) {
       this.ecobeeAccessories[equipmentName].update(activeEquipments.includes(equipmentName));
     }

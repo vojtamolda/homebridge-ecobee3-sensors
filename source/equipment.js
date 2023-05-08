@@ -30,7 +30,8 @@ function EcobeeEquipment(log, config, platform, homebridgeAccessory) {
 
   if (platform.excludeEquipmentSensors) return;
   var switchService = this.homebridgeAccessory.getService(Service.ContactSensor);
-  this.temperatureCharacteristic = switchService.getCharacteristic(Characteristic.ContactSensorState);
+  switchService.displayName = config.name;
+  this.contactSensorCharacteristic = switchService.getCharacteristic(Characteristic.ContactSensorState);
 
   this.log.info(this.prefix, "Initialized | " + config.name);
   this.update(config);
@@ -41,12 +42,12 @@ EcobeeEquipment.prototype.update = function (status) {
   this.log.debug(this.prefix, "Updating equipment measurement...");
   this.log.debug(config);
 
-  if (this.temperatureCharacteristic) {
+  if (this.contactSensorCharacteristic) {
     var currentValue = status ?
       this.Characteristic.ContactSensorState.CONTACT_DETECTED :
       this.Characteristic.ContactSensorState.CONTACT_NOT_DETECTED;
 
-    this.temperatureCharacteristic.setValue(currentValue);
+    this.contactSensorCharacteristic.setValue(currentValue);
     this.log.info(this.prefix, this.currentValue);
   }
 };

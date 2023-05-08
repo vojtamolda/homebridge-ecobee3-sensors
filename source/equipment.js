@@ -31,12 +31,12 @@ function EcobeeEquipment(log, config, platform, homebridgeAccessory) {
 
   if (platform.excludeEquipmentSensors) return;
 
-  var switchService = this.homebridgeAccessory.getService(Service.ContactSensor);
-  if (!switchService) {
-    switchService = this.homebridgeAccessory.addService(Service.ContactSensor);
-    switchService.displayName = 'Equipment';
+  var service = this.homebridgeAccessory.getService(Service.StatefulProgrammableSwitch);
+  if (!service) {
+    service = this.homebridgeAccessory.addService(Service.StatefulProgrammableSwitch);
+    service.displayName = 'Equipment';
   }
-  this.contactSensorCharacteristic = switchService.getCharacteristic(Characteristic.ContactSensorState);
+  this.switchState = service.getCharacteristic(Characteristic.ProgrammableSwitchOutputState);
 
   this.log.info(this.prefix, "Initialized | " + config.name);
   this.update(config);
@@ -46,13 +46,10 @@ function EcobeeEquipment(log, config, platform, homebridgeAccessory) {
 EcobeeEquipment.prototype.update = function (status) {
   this.log.debug(this.prefix, "Updating equipment measurement " + this.name);
 
-  if (this.contactSensorCharacteristic) {
-    var currentValue = status ?
-      Characteristic.ContactSensorState.CONTACT_DETECTED :
-      Characteristic.ContactSensorState.CONTACT_NOT_DETECTED;
-
-    this.contactSensorCharacteristic.setValue(currentValue);
-    this.log.info(this.prefix, this.currentValue);
+  if (this.switchState) {
+    var currentValue = status ? 1 : 0;
+    this.switchState.setValue(currentValue);
+    this.log.info(this.prefix, currentValue);
   }
 };
 

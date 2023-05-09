@@ -37,7 +37,8 @@ Homebridge is setup via `config.json` file sitting in the `~/.homebridge/` direc
     "exclude_humidity_sensors": false,
     "exclude_occupancy_sensors": false,
     "exclude_temperature_sensors": false,
-    "exclude_thermostat": false
+    "exclude_thermostat": false,
+    "exclude_equipment_sensors": false
   }
 ]
 ```

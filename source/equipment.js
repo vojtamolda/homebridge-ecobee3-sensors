@@ -51,7 +51,7 @@ EcobeeEquipment.prototype.update = function (status) {
       Characteristic.ContactSensorState.CONTACT_NOT_DETECTED :
       Characteristic.ContactSensorState.CONTACT_DETECTED;
     this.switchState.setValue(currentValue);
-    this.log.info(this.prefix, currentValue);
+    this.log.info(this.prefix + " " + status);
   }
 };
 

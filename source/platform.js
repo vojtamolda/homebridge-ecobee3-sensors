@@ -375,7 +375,7 @@ EcobeePlatform.prototype.equipments = function (reply) {
 
   for (var equipmentName in this.ecobeeAccessories) {
     var equipment = this.ecobeeAccessories[equipmentName];
-    if (equipment.isEquipment) {
+    if (equipment.isEquipment && equipmentName.startsWith("Ecobee ")) {
       equipment.update(activeEquipments.includes(equipmentName));
     }
   }

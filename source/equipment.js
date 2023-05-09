@@ -39,7 +39,7 @@ function EcobeeEquipment(log, config, platform, homebridgeAccessory) {
   this.switchState = service.getCharacteristic(Characteristic.ContactSensorState);
 
   this.log.info(this.prefix, "Initialized | " + config.name);
-  this.update(config);
+  this.update(true);
 }
 
 
@@ -51,7 +51,7 @@ EcobeeEquipment.prototype.update = function (status) {
       Characteristic.ContactSensorState.CONTACT_NOT_DETECTED :
       Characteristic.ContactSensorState.CONTACT_DETECTED;
     this.switchState.setValue(currentValue);
-    this.log.info(this.prefix + " " + status);
+    this.log.info(this.prefix + " - " + status);
   }
 };
 

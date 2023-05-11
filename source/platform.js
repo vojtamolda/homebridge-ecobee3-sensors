@@ -390,10 +390,10 @@ EcobeePlatform.prototype.clean = function () {
     var homebridgeAccessory = this.homebridgeAccessories[sensorCode];
     this.log.info("Remove | " + homebridgeAccessory.displayName + " - " + sensorCode);
     try {
-    this.homebridgeAPI.unregisterPlatformAccessories("homebridge-ecobee3-sensors", "Ecobee 3 Sensors", [homebridgeAccessory]);
+      this.homebridgeAPI.unregisterPlatformAccessories("homebridge-ecobee3-sensors", "Ecobee 3 Sensors", [homebridgeAccessory]);
     } catch (e) {
-      this.log.error(e);
     }
+    delete this.homebridgeAccessories[sensorCode];
   }
 };
 

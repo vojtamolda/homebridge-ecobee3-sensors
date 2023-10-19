@@ -38,12 +38,20 @@ Homebridge is setup via `config.json` file sitting in the `~/.homebridge/` direc
     "exclude_occupancy_sensors": false,
     "exclude_temperature_sensors": false,
     "exclude_thermostat": false,
-    "exclude_equipment_sensors": false
+    "exclude_equipment_sensors": false,
+    "log_level": 3
   }
 ]
 ```
 
 Alternatively, you can use the example [`config.json`](config.json) included in the repository. It's a good starting point and the file doesn't require any modification.
+
+Log Levels:
+- 0: None
+- 1: Errors
+- 2: Warnings
+- 3: Info (default)
+- 4: Debug
 
 ### Run Homebridge
 Homebridge package creates a handy executable that can be used to start the home automation server.

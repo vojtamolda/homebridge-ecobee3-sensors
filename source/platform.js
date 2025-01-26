@@ -5,6 +5,15 @@ var UUIDGen, Accessory, EcobeeSensor, EcobeeEquipment;
 var Querystring = require('querystring');
 var Https = require('https');
 
+const supportedThermostats = [
+    'artemisSmart',
+    'vulcanSmart',
+    'athenaSmart',
+    'apolloSmart',
+    'nikeSmart',
+    'aresSmart',
+];
+
 const Verbosity = Object.freeze({
     None: 0,
     Error: 1,
@@ -295,7 +304,7 @@ EcobeePlatform.prototype.sensors = function (reply) {
   }
 
   for (var thermostatConfig of reply.thermostatList) {
-    if ((thermostatConfig.modelNumber != 'vulcanSmart') && (thermostatConfig.modelNumber != 'athenaSmart') && (thermostatConfig.modelNumber != 'apolloSmart') && (thermostatConfig.modelNumber != 'nikeSmart') && (thermostatConfig.modelNumber != 'aresSmart')) {
+    if (!supportedThermostats.contains(thermostatConfig.modelNumber)) {
       this.log.info("Not supported thermostat | " + thermostatConfig.name + " (" + thermostatConfig.modelNumber + ")");
       continue
     }
@@ -343,7 +352,7 @@ EcobeePlatform.prototype.equipments = function (reply) {
 
   var activeEquipments = [];
   for (var thermostatConfig of reply.thermostatList) {
-    if ((thermostatConfig.modelNumber != 'vulcanSmart') && (thermostatConfig.modelNumber != 'athenaSmart') && (thermostatConfig.modelNumber != 'apolloSmart') && (thermostatConfig.modelNumber != 'nikeSmart') && (thermostatConfig.modelNumber != 'aresSmart')) {
+    if (!supportedThermostats.contains(thermostatConfig.modelNumber)) {
       this.log.info("Not supported thermostat | " + thermostatConfig.name + " (" + thermostatConfig.modelNumber + ")");
       continue
     }

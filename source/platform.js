@@ -304,7 +304,7 @@ EcobeePlatform.prototype.sensors = function (reply) {
   }
 
   for (var thermostatConfig of reply.thermostatList) {
-    if (!supportedThermostats.contains(thermostatConfig.modelNumber)) {
+    if (supportedThermostats.indexOf(thermostatConfig.modelNumber) == -1) {
       this.log.info("Not supported thermostat | " + thermostatConfig.name + " (" + thermostatConfig.modelNumber + ")");
       continue
     }
@@ -352,7 +352,7 @@ EcobeePlatform.prototype.equipments = function (reply) {
 
   var activeEquipments = [];
   for (var thermostatConfig of reply.thermostatList) {
-    if (!supportedThermostats.contains(thermostatConfig.modelNumber)) {
+    if (supportedThermostats.indexOf(thermostatConfig.modelNumber) == -1) {
       this.log.info("Not supported thermostat | " + thermostatConfig.name + " (" + thermostatConfig.modelNumber + ")");
       continue
     }
